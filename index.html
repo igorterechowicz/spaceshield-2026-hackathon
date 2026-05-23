@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hutnik, który patrzył w górę</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ekran 1: Intro -->
+  <section id="intro">
+    <div class="intro-content">
+      <h1 class="serif">Hutnik, który patrzył w górę</h1>
+      <p class="intro-text" id="intro-narracja"></p>
+      <div class="iss-status" id="iss-status">Łączę się z orbitą...</div>
+      <p class="iss-context">Dziś ISS przelatuje nad tym samym wzgórzem co Sputnik w 1957.</p>
+      <a href="#mapa" class="btn-enter">Wejdź w historię</a>
+    </div>
+  </section>
+
+  <!-- Ekran 2: Mapa -->
+  <section id="mapa">
+    <div id="leaflet-map"></div>
+    <div class="map-panel" id="map-panel">
+      <p class="panel-placeholder">Kliknij marker na mapie</p>
+    </div>
+  </section>
+
+  <!-- Ekran 3: Split screen -->
+  <section id="archiwum">
+    <h2 class="serif">Wtedy i teraz</h2>
+    <div class="split-container">
+      <div class="split-after">
+        <img src="assets/img/satelita-1.jpg" alt="Stalowa Wola dziś">
+        <span class="split-label split-label-right">2024 — obraz satelitarny</span>
+      </div>
+      <div class="split-before">
+        <img src="assets/img/archiwum-1.jpg" alt="Stalowa Wola lata 50.">
+        <span class="split-label split-label-left">1957 — Huta Stalowa Wola</span>
+      </div>
+      <input type="range" id="split-slider" class="split-slider" value="50" min="0" max="100">
+    </div>
+  </section>
+
+  <!-- Ekran 4: Finał -->
+  <section id="final">
+    <div class="final-content">
+      <p class="serif finale-text" id="finale-text">Ładowanie sygnału...</p>
+      <div class="space-data" id="space-data"></div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/satellite.js/dist/satellite.min.js"></script>
+  <script src="data/markers.js"></script>
+  <script src="content/narracja.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

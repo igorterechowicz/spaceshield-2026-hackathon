@@ -1,0 +1,9 @@
+#ignore ai folder
+ai
+#ignore instrukcje folder
+instrukcje
+#ignore plan-md folder
+plan-md
+
+#ignore plan-pdf folder
+plan-pdf
