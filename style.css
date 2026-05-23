@@ -14,25 +14,91 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+html, body {
+  overflow: hidden;
+  height: 100%;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
+  padding-top: 52px;
+}
+
+/* ── Navbar ── */
+
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  background: rgba(10, 10, 15, 0.92);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.nav-brand {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  padding: 0.35rem 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  color: var(--accent-amber);
+  border-bottom: 1px solid var(--accent-amber);
 }
 
 /* ── Sekcje ── */
 
 section {
-  min-height: 100vh;
+  display: none;
+  min-height: calc(100vh - 52px);
   width: 100%;
 }
 
-#intro {
+section.active {
   display: flex;
+  animation: viewIn 0.4s ease both;
+}
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#intro {
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -75,9 +141,8 @@ section {
 }
 
 #map {
-  height: 100vh;
+  height: calc(100vh - 52px);
   position: relative;
-  display: flex;
 }
 
 #leaflet-map {
@@ -95,15 +160,12 @@ section {
 
 #archiwum {
   padding: 4rem 2rem;
-  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
 }
 
 #final {
-  min-height: 100vh;
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
@@ -321,20 +383,6 @@ h3 {
   margin-top: 2rem;
 }
 
-/* ── Scroll fade-in ── */
-
-#archiwum,
-#final {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-#archiwum.visible,
-#final.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 /* ── Marker kategoria label ── */
 

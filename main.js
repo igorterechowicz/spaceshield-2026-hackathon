@@ -227,18 +227,36 @@ function initSplitScreen() {
   before.style.clipPath = `inset(0 50% 0 0)`;
 }
 
-function initScrollAnimations() {
-  const elements = document.querySelectorAll('#archiwum, #final, .map-panel');
+let mapInitialized = false;
+let finalRendered = false;
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
+function showView(id) {
+  const validViews = ['intro', 'map', 'archiwum', 'final'];
+  if (!validViews.includes(id)) id = 'intro';
 
-  elements.forEach(el => observer.observe(el));
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+
+  const section = document.getElementById(id);
+  if (section) section.classList.add('active');
+
+  const link = document.querySelector(`.nav-link[data-view="${id}"]`);
+  if (link) link.classList.add('active');
+
+  if (id === 'map' && !mapInitialized) {
+    initMap();
+    mapInitialized = true;
+  }
+
+  if (id === 'final' && !finalRendered) {
+    renderFinale();
+    finalRendered = true;
+  }
+}
+
+function router() {
+  const hash = window.location.hash.slice(1) || 'intro';
+  showView(hash);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -246,19 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('map-panel').innerHTML =
     '<p class="panel-placeholder">Kliknij znacznik na mapie, aby zobaczyć historię tego miejsca.</p>';
 
-  initMap();
   initSplitScreen();
-  initScrollAnimations();
 
   fetchISS();
   setInterval(fetchISS, 5000);
 
-  const finalObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      renderFinale();
-      finalObserver.disconnect();
-    }
-  }, { threshold: 0.3 });
-
-  finalObserver.observe(document.getElementById('final'));
+  window.addEventListener('hashchange', router);
+  router();
 });
