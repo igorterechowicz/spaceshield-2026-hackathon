@@ -51,7 +51,7 @@ function initMap() {
     [50.640, 22.120]   // NE
   );
 
-  const map = L.map('leaflet-map', {
+  map = L.map('leaflet-map', {
     maxBounds: stalowaBounds,
     maxBoundsViscosity: 1.0,
     minZoom: 12,
@@ -62,12 +62,29 @@ function initMap() {
   }).addTo(map);
 
   markers.forEach(m => {
-    const marker = L.marker([m.lat, m.lon], { icon: createIcon(m.kategoria) });
-    marker.addTo(map);
-    marker.on('click', () => openPanel(m));
+    const layer = L.marker([m.lat, m.lon], { icon: createIcon(m.kategoria) });
+    layer.on('click', () => openPanel(m));
+    if (!m.order || m.order <= 1) {
+      layer.addTo(map);
+    } else {
+      markerLayerByOrder[m.order] = layer;
+    }
   });
 
   return map;
+}
+
+function revealNextMarker() {
+  revealedUpTo += 1;
+  const layer = markerLayerByOrder[revealedUpTo];
+  if (layer) {
+    layer.addTo(map);
+    const el = layer.getElement();
+    if (el) {
+      el.classList.add('marker-popin');
+      el.addEventListener('animationend', () => el.classList.remove('marker-popin'), { once: true });
+    }
+  }
 }
 
 function getNotatka(m) {
@@ -97,6 +114,11 @@ function openPanel(m) {
     <p class="cytat">"${m.historia}"</p>
     <p class="notatka${isMinimal ? ' notatka-brak' : ''}">${notatka || ''}</p>
   `;
+
+  clearTimeout(revealTimer);
+  if (m.order && markerLayerByOrder[m.order + 1]) {
+    revealTimer = setTimeout(revealNextMarker, 10_000);
+  }
 }
 
 function issKontekst(lat, lon) {
@@ -310,6 +332,10 @@ async function renderFinale() {
 
 let mapInitialized = false;
 let finalRendered = false;
+let map = null;
+let revealedUpTo = 1;
+let revealTimer = null;
+const markerLayerByOrder = {};
 
 function showView(id) {
   const validViews = ['intro', 'historia', 'map', 'archiwum', 'final'];

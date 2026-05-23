@@ -1,5 +1,6 @@
 const markers = [
   {
+    order: 1,
     lat: 50.57218440674521, lon: 22.068341863623584,
     kategoria: "historia",
     tytul: "Pławo",
@@ -11,6 +12,7 @@ const markers = [
     notatka_minimal: "Urodziłem się na Pławie, w glinianej chałupie pod wielką strzechą. To z tego podwórka po raz pierwszy zobaczyłem hutę. Patrzyłem na nią z lękiem i zachwytem. Wieś powoli cichła, a dawne lasy ustępowały miejsca nowemu światu. Wojna zabrała mi rodzinę, a nowy porządek wysiedlił mnie z ojcowizny. Zamieszkałem w bloku przy ulicy Hutniczej. Wokół rosło nowe miasto, ale długo nie potrafiłem odnaleźć się w tym miejscu. Wieczorami patrzyłem na czerwone łuny nad zakładami i czułem, że ta ziemia wciąż mnie boli."
   },
   {
+    order: 2,
     lat: 50.56373797149967, lon: 22.054262183260924,
     kategoria: "historia",
     tytul: "Osiedle hutnicze",
@@ -22,6 +24,7 @@ const markers = [
     notatka_minimal: "Gdy osiadłem przy ulicy Hutniczej i poślubiłem Marię, myślałem, że to już całe moje życie. Wszystko zmieniło się w 1957 roku, gdy radio ogłosiło sukces pierwszego satelity. Potajemnie zacząłem wynosić z huty materiały i w małym pokoju budować własne urządzenie do nasłuchiwania nieba. Ze stalowej blachy zrobiłem zwierciadło, przerobiłem stare radio i zespawałem ciężki stojak pod antenę."
   },
   {
+    order: 3,
     lat: 50.565661405778094, lon: 22.066249131486696,
     kategoria: "historia",
     tytul: "Ulica Staszica (Dach nad Miastem i Pierwszy Sygnał)",
