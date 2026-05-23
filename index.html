@@ -30,6 +30,7 @@
       <div class="iss-status" id="iss-status">Łączę się z orbitą...</div>
       <p class="iss-context">Dziś ISS przelatuje nad tym samym wzgórzem co Sputnik w 1957.</p>
       <a href="#map" class="btn-enter">Wejdź w historię</a>
+      <button class="btn-demo" id="btn-demo">DEMO</button>
     </div>
   </section>
 
@@ -47,20 +48,50 @@
     </div>
   </section>
 
-  <!-- Ekran 3: Split screen -->
+  <!-- Ekran 3: Archiwum — 4 pary zdjęć -->
   <section id="archiwum">
     <h2 class="serif">Wtedy i teraz</h2>
-    <div class="split-container">
-      <div class="split-after">
-        <img src="assets/img/satelita-1.jpg" alt="Stalowa Wola dziś">
-        <span class="split-label split-label-right">2024 — obraz satelitarny</span>
+    <div class="archiwum-pairs">
+      <div class="archiwum-pair">
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/archiwum-1.jpg" alt="Stalowa Wola 1957">
+          <span class="archiwum-label">1957 — Huta Stalowa Wola</span>
+        </div>
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/satelita-1.jpg" alt="Stalowa Wola 2024">
+          <span class="archiwum-label archiwum-label-right">2024 — obraz satelitarny</span>
+        </div>
       </div>
-      <div class="split-before">
-        <img src="assets/img/archiwum-1.jpg" alt="Stalowa Wola lata 50.">
-        <span class="split-label split-label-left">1957 — Huta Stalowa Wola</span>
+      <div class="archiwum-pair">
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/archiwum-2.jpg" alt="Stalowa Wola 1957">
+          <span class="archiwum-label">1957 — zakład metalurgiczny</span>
+        </div>
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/satelita-2.jpg" alt="Stalowa Wola 2024">
+          <span class="archiwum-label archiwum-label-right">2024 — widok z orbity</span>
+        </div>
       </div>
-      <div class="split-divider" id="split-divider"></div>
-      <input type="range" id="split-slider" class="split-slider" value="50" min="0" max="100">
+      <div class="archiwum-pair">
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/archiwum-3.jpg" alt="Stalowa Wola 1957">
+          <span class="archiwum-label">1957 — piec hutniczy</span>
+        </div>
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/satelita-3.jpg" alt="Stalowa Wola 2024">
+          <span class="archiwum-label archiwum-label-right">2024 — obraz satelitarny</span>
+        </div>
+      </div>
+      <div class="archiwum-pair">
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/archiwum-4.jpg" alt="Stalowa Wola 1957">
+          <span class="archiwum-label">1957 — centrum Stalowej Woli</span>
+        </div>
+        <div class="archiwum-img-wrap">
+          <img src="assets/img/satelita-4.jpg" alt="Stalowa Wola 2024">
+          <span class="archiwum-label archiwum-label-right">2024 — Google Earth</span>
+        </div>
+      </div>
     </div>
   </section>
 

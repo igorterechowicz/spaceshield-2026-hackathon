@@ -1,3 +1,17 @@
+let demoMode = false;
+const DEMO_VARIANTS = ['contact', 'silence', 'interference'];
+const demoVariant = DEMO_VARIANTS[Math.floor(Math.random() * DEMO_VARIANTS.length)];
+
+function getDemoData(variant) {
+  if (variant === 'contact') {
+    return { issData: { lat: 50.58, lon: 22.05 }, kp: 1.5, nextPass: 'za 12 min' };
+  }
+  if (variant === 'interference') {
+    return { issData: { lat: 51.12, lon: 23.44 }, kp: 5.3, nextPass: 'za 45 min' };
+  }
+  return { issData: { lat: -10.22, lon: 135.44 }, kp: 0.7, nextPass: null };
+}
+
 const CATEGORY_COLOR = {
   'biala-plama':  '#e53e3e',
   'bariera':      '#ed8936',
@@ -86,6 +100,15 @@ function issKontekst(lat, lon) {
 }
 
 async function fetchISS() {
+  if (demoMode) {
+    const { issData } = getDemoData(demoVariant);
+    const locLabel = demoVariant === 'contact' ? 'nad Polską'
+                   : demoVariant === 'interference' ? 'nad Europą'
+                   : 'nad Pacyfikiem';
+    const el = document.getElementById('iss-status');
+    if (el) el.innerHTML = `[DEMO] ISS teraz: ${issData.lat}°N, ${issData.lon}°E — ${locLabel}`;
+    return issData;
+  }
   try {
     const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -168,16 +191,24 @@ async function fetchNextPassage() {
 }
 
 async function renderFinale() {
-  const [issData, kp, nextPass] = await Promise.all([fetchISS(), fetchKp(), fetchNextPassage()]);
+  let issData, kp, nextPass, variant;
 
-  let variant;
-  if (kp !== null && kp >= 4) {
-    variant = 'interference';
-  } else if (issData && issData.lon >= 0 && issData.lon <= 40
-             && issData.lat >= 35 && issData.lat <= 72) {
-    variant = 'contact';
+  if (demoMode) {
+    const demo = getDemoData(demoVariant);
+    issData = demo.issData;
+    kp = demo.kp;
+    nextPass = demo.nextPass;
+    variant = demoVariant;
   } else {
-    variant = 'silence';
+    [issData, kp, nextPass] = await Promise.all([fetchISS(), fetchKp(), fetchNextPassage()]);
+    if (kp !== null && kp >= 4) {
+      variant = 'interference';
+    } else if (issData && issData.lon >= 0 && issData.lon <= 40
+               && issData.lat >= 35 && issData.lat <= 72) {
+      variant = 'contact';
+    } else {
+      variant = 'silence';
+    }
   }
 
   const tekstEl = document.getElementById('finale-text');
@@ -287,6 +318,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+  });
+
+  document.getElementById('btn-demo')?.addEventListener('click', () => {
+    demoMode = !demoMode;
+    document.getElementById('btn-demo').classList.toggle('active', demoMode);
+    finalRendered = false;
+    fetchISS();
   });
 
   window.addEventListener('hashchange', router);
