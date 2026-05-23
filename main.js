@@ -2,6 +2,8 @@ let demoMode = false;
 const DEMO_VARIANTS = ['contact', 'silence', 'interference'];
 const demoVariant = DEMO_VARIANTS[Math.floor(Math.random() * DEMO_VARIANTS.length)];
 
+const spaceState = { issLat: null, issLon: null, kp: null };
+
 function getDemoData(variant) {
   if (variant === 'contact') {
     return { issData: { lat: 50.58, lon: 22.05 }, kp: 1.5, nextPass: 'za 12 min' };
@@ -12,12 +14,7 @@ function getDemoData(variant) {
   return { issData: { lat: -10.22, lon: 135.44 }, kp: 0.7, nextPass: null };
 }
 
-const CATEGORY_COLOR = {
-  'biala-plama':  '#e53e3e',
-  'bariera':      '#ed8936',
-  'historia':     '#d4890a',
-  'rekomendacja': '#3a7bd5',
-};
+const CATEGORY_COLOR = { 'historia': '#d4890a' };
 
 function createIcon(category) {
   const color = CATEGORY_COLOR[category] || '#888';
@@ -61,34 +58,32 @@ function initMap() {
   return map;
 }
 
-let panelDaneVisible = false;
-
-function openPanel(m) {
-  panelDaneVisible = false;
-  const panel = document.getElementById('map-panel');
-
-  panel.innerHTML = `
-    <div class="marker-kategoria">${m.kategoria.replace('-', ' ')}</div>
-    <div class="marker-rok">${m.rok_cytatu}</div>
-    <div class="cytat serif italic">"${m.cytat}"</div>
-    <div class="problem" id="panel-problem" style="display:none">
-      <strong>${m.tytul}</strong>
-      <p>${m.problem}</p>
-    </div>
-    <div class="reveal-hint" id="reveal-hint">▼ Pokaż co się nie zmieniło</div>
-  `;
-
-  document.getElementById('reveal-hint').addEventListener('click', showData);
-  setTimeout(showData, 3000);
+function getNotatka(m) {
+  let issLat, issLon, kp;
+  if (demoMode) {
+    const demo = getDemoData(demoVariant);
+    issLat = demo.issData.lat; issLon = demo.issData.lon; kp = demo.kp;
+  } else {
+    issLat = spaceState.issLat; issLon = spaceState.issLon; kp = spaceState.kp;
+  }
+  if (kp !== null && kp >= 4) return m.notatka_brak;
+  if (issLon !== null && issLon >= 0 && issLon <= 40 && issLat !== null && issLat >= 35 && issLat <= 72) {
+    return m.notatka_pelna;
+  }
+  return m.notatka_niepelna;
 }
 
-function showData() {
-  if (panelDaneVisible) return;
-  panelDaneVisible = true;
-  const problem = document.getElementById('panel-problem');
-  const hint = document.getElementById('reveal-hint');
-  if (problem) problem.style.display = 'block';
-  if (hint) hint.style.display = 'none';
+function openPanel(m) {
+  const notatka = getNotatka(m);
+  const kp = demoMode ? getDemoData(demoVariant).kp : spaceState.kp;
+  const isBrak = kp !== null && kp >= 4;
+
+  document.getElementById('map-panel').innerHTML = `
+    ${m.zdjecie ? `<img src="${m.zdjecie}" class="marker-photo" alt="${m.tytul}" onerror="this.style.display='none'">` : ''}
+    <p class="marker-meta">${m.rok_zdjecia || '—'} · ${m.tytul}</p>
+    <p class="cytat">"${m.cytat}"</p>
+    <p class="notatka${isBrak ? ' notatka-brak' : ''}">${notatka || ''}</p>
+  `;
 }
 
 function issKontekst(lat, lon) {
@@ -151,7 +146,7 @@ async function fetchISS() {
                    : demoVariant === 'interference' ? 'nad Europą'
                    : 'nad Pacyfikiem';
     const el = document.getElementById('iss-status');
-    if (el) el.innerHTML = `[DEMO] ISS teraz: ${issData.lat}°N, ${issData.lon}°E — ${locLabel}`;
+    if (el) el.innerHTML = `[DEMO] Międzynarodowa Stacja Kosmiczna teraz: ${issData.lat}°N, ${issData.lon}°E — ${locLabel}`;
     return issData;
   }
   try {
@@ -163,7 +158,7 @@ async function fetchISS() {
 
     const el = document.getElementById('iss-status');
     if (el) {
-      el.innerHTML = `ISS teraz: ${lat}°N, ${lon}°E — ${issKontekst(data.latitude, data.longitude)}`;
+      el.innerHTML = `Międzynarodowa Stacja Kosmiczna teraz: ${lat}°N, ${lon}°E — ${issKontekst(data.latitude, data.longitude)}`;
     }
 
     return { lat: parseFloat(lat), lon: parseFloat(lon) };
@@ -272,39 +267,13 @@ async function renderFinale() {
     const issLat = issData ? `${issData.lat}°N` : '—';
     const issLon = issData ? `${issData.lon}°E` : '—';
     daneEl.innerHTML = `
-      <div>ISS: ${issLat}, ${issLon}</div>
-      <div>Kp index: ${kpDisplay}${kp !== null && kp >= 4 ? ' ⚡ burza magnetyczna' : ''}</div>
+      <div>Międzynarodowa Stacja Kosmiczna: ${issLat}, ${issLon}— ${issKontekst(data.latitude, data.longitude)}</div>
       ${nextPass ? `<div>Przelot nad Stalową Wolą: ${nextPass}</div>` : ''}
+      <div>Index aktywności słonecznej: ${kpDisplay}${kp !== null && kp >= 4 ? ' ⚡ burza magnetyczna' : ''}</div>
     `;
   }
 }
 
-function initSplitScreen() {
-  const slider = document.getElementById('split-slider');
-  const before = document.querySelector('.split-before');
-  const divider = document.getElementById('split-divider');
-  const beforeImg = before?.querySelector('img');
-  const afterImg = document.querySelector('.split-after img');
-
-  if (beforeImg && !beforeImg.src.includes('http')) {
-    before.style.background = '#2a1810';
-    beforeImg.style.display = 'none';
-  }
-  if (afterImg && !afterImg.src.includes('http')) {
-    document.querySelector('.split-after').style.background = '#101828';
-    afterImg.style.display = 'none';
-  }
-
-  if (!slider || !before) return;
-
-  const update = (val) => {
-    before.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
-    if (divider) divider.style.left = `${val}%`;
-  };
-
-  slider.addEventListener('input', (e) => update(e.target.value));
-  update(50);
-}
 
 let mapInitialized = false;
 let finalRendered = false;
@@ -346,10 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
     historiaBodyEl.textContent = narration.historia;
   }
 
-  initSplitScreen();
-
-  fetchISS();
-  setInterval(fetchISS, 5000);
+  fetchISS().then(iss => {
+    if (iss) { spaceState.issLat = iss.lat; spaceState.issLon = iss.lon; }
+    setInterval(fetchISS, 5000);
+  });
+  fetchKp().then(kp => { if (kp !== null) spaceState.kp = kp; });
 
   document.getElementById('btn-share')?.addEventListener('click', () => {
     const url = window.location.href;

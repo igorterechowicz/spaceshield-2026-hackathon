@@ -56,6 +56,15 @@ body {
   letter-spacing: 0.02em;
 }
 
+.header-logo {
+  height: 28px;
+  width: auto;
+  opacity: 0.85;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .nav-links {
   display: flex;
   gap: 0.25rem;
@@ -461,25 +470,38 @@ h3 {
   line-height: 1.7;
 }
 
-.problem {
+.marker-photo {
+  width: calc(100% + 3rem);
+  margin-left: -1.5rem;
+  margin-top: -1.5rem;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  filter: sepia(0.4);
+  margin-bottom: 0.75rem;
+}
+
+.marker-meta {
+  font-family: monospace;
+  color: var(--accent-amber);
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.notatka {
   font-family: 'Inter', sans-serif;
   color: var(--text-secondary);
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.6;
 }
 
-.reveal-hint {
+.notatka-brak {
   color: var(--accent-amber);
-  font-size: 0.75rem;
-  cursor: pointer;
-  margin-top: 0.75rem;
-}
-
-.reveal-hint:hover {
-  text-decoration: underline;
+  font-style: italic;
+  opacity: 0.7;
 }
 
 .panel-placeholder {
