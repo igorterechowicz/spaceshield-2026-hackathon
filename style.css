@@ -716,9 +716,10 @@ h3 {
 /* ── Demo variant buttons ── */
 
 #demo-variant-btns {
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  justify-content: center;
 }
 
 .btn-variant {

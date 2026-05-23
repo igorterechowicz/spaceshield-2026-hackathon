@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.toggle('active', demoMode);
 
     const variantBtns = document.getElementById('demo-variant-btns');
-    variantBtns.style.display = demoMode ? 'flex' : 'none';
+    variantBtns.style.display = demoMode ? 'grid' : 'none';
 
     const iss = await fetchISS();
     if (!demoMode && iss) {
