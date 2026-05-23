@@ -1,58 +1,34 @@
 const markers = [
   {
-    lat: 50.5901, lon: 22.0612,
+    lat: 50.56803108523618, lon: 22.05946291411424,
+    kategoria: "",
+    tytul: "",
+    cytat: "",
+    rok_cytatu: "",
+    problem: ""
+  },
+  {
+    lat: 50.569639096986215, lon: 22.0555149410588,
     kategoria: "biala-plama",
-    tytul: "Osiedle Hutnik",
-    cytat: "Wracam po nocnej zmianie. Autobus o 5 rano. Potem nic do ósmej. Trzeba iść piechotą, bo inaczej nie ma sensu.",
+    tytul: "Przejście przez tory",
+    cytat: "Czekam przy szlabanie. Pociąg towarowy sunie w nieskończoność, wagon za wagonem. Minuty uciekają, a ja wiem - znowu spóźnię się na zmianę.Dziś znowu się spóźnię do huty. Kosmos jest cierpliwy... a brygadzista nie.",
     rok_cytatu: "1957",
-    problem: "Luka nocna: ostatni kurs 22:10, pierwszy poranny 6:45 — 8,5h bez komunikacji miejskiej."
+    problem: "Brak kładki lub przejścia podziemnego dla pieszych. Długie oczekiwanie na otwarcie szlabanu (nawet 6 - 12 minut). Szczególnie trudne dla osób z niepełnosprawnościami, rodziców z wózkami i starszych osób - brak bezpiecznego, bezkolizyjnego przejścia przez tory."
   },
   {
-    lat: 50.5833, lon: 22.0450,
-    kategoria: "biala-plama",
-    tytul: "Przejazd przez tory",
-    cytat: "Jak zamkną szlaban pod koniec zmiany, stoimy wszyscy. Pociąg towarowy, dziesięć minut, cała ulica.",
-    rok_cytatu: "1957",
-    problem: "Ten przejazd istnieje do dziś. Brak kładki lub przejścia podziemnego. Opóźnia linie 3 i 7 średnio 6–12 min dziennie."
-  },
-  {
-    lat: 50.5765, lon: 22.0334,
-    kategoria: "biala-plama",
-    tytul: "Dzielnica Południe",
-    cytat: "Budują tam nowe mieszkania dla przybyłych. Mówią że autobus dojedzie za rok. Rok mówią od trzech lat.",
-    rok_cytatu: "1958",
-    problem: "Nadal bez bezpośredniej linii do centrum. Najbliższy przystanek: 1,2 km pieszo. Ostatni odcinek bez chodnika."
-  },
-  {
-    lat: 50.5844, lon: 22.0401,
+    lat: 50.567787046276294, lon: 22.06015870859697,
     kategoria: "rekomendacja",
-    tytul: "Plac przy rynku",
-    cytat: "Tu się wszystko zbiega. Rano idą biurowi, wieczorem my z huty. Nigdy w tym samym czasie — jakby miasto miało dwie zmiany.",
+    tytul: "Centralny węzeł komunikacyjny",
+    cytat: "Tu jest wielka otwarta przestrzeń. Ani drzewa, ani chodnika - tylko błoto i wiatr. A daleko, na horyzoncie, rosną nowe osiedla bloków, jakby ktoś rzucił je na pole. Stoję i myślę - kiedyś to wszystko będzie sercem miasta.",
     rok_cytatu: "1957",
-    problem: "Idealna lokalizacja węzła przesiadkowego. Krzyżują się tu 4 linie. Brak synchronizacji rozkładów — okno przesiadkowe: 0 minut."
+    problem: "Plac na Okulickiego w Stalowej Woli. Krzyżują się tutaj linie autobusowe. Brak synchronizacji rozkładów powoduje, że średni czas oczekiwania na przesiadkę wynosi 12 - 18 minut. Idealne miejsce na prawdziwy węzeł przesiadkowy z zadaszonymi wiatami i tablicami elektronicznymi."
   },
   {
-    lat: 50.5950, lon: 22.0610,
+    lat: 50.55569081595824, lon: 22.045896087903262,
     kategoria: "historia",
-    tytul: "Wzgórze za fabryką",
-    cytat: "Stamtąd widać całe miasto jak na dłoni. I niebo. Nikt tam nie chodzi — za daleko, nie ma jak dojechać. Moje ulubione miejsce właśnie dlatego.",
+    tytul: "Huta Stalowa Wola (zakłady południowe)",
+    cytat: "Hala M-2. Los bywa przewrotny. W lipcu 1939 roku marzyłem, by zdać tu egzaminy do Liceum Mechanicznego. Wojna zmieniła wszystko, ale i tak tam trafiłem - jako wojenny praktykant, a potem robotnik. Ta hala ukształtowała moje dłonie, podczas gdy niebo kształtowało mój umysł.",
     rok_cytatu: "1957",
-    problem: "Tu hutnik postawił radioteleskop. Dziś: teren rekreacyjny bez dojazdu komunikacją miejską. Proponowana trasa rowerowa: 2,3 km wzdłuż rzeki."
-  },
-  {
-    lat: 50.5820, lon: 22.0480,
-    kategoria: "bariera",
-    tytul: "Przystanek ul. Mickiewicza",
-    cytat: "Stara Marta z naszego bloku ledwo chodzi. Mówi że schody do tunelu ją wykańczają. Ma rację — nie ma innego wyjścia.",
-    rok_cytatu: "1961",
-    problem: "Brak podjazdu dla wózków i osób poruszających się na wózkach. Krawężnik obniżony tylko po jednej stronie przystanku. Bariera infrastrukturalna bez zmian od dekad."
-  },
-  {
-    lat: 50.5870, lon: 22.0390,
-    kategoria: "bariera",
-    tytul: "Dworzec PKS",
-    cytat: "Przyjechał do mnie brat na wózku. Taksówką z dworca, bo autobus nie podjeżdża pod peron. W 1957 roku. Czy teraz jest inaczej?",
-    rok_cytatu: "1962",
-    problem: "Peron bez rampy. Jedyna linia z obniżoną podłogą kursuje 3×/dobę. Brak rozkładu w formacie dostępnym dla niewidomych."
+    problem: "Miejsce symboliczne COP-u. Dziś to hala przemyslowa z ograniczonym dostępem komunikacyjnym dla mieszkańców."
   }
 ];
