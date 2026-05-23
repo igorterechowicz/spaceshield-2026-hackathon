@@ -14,6 +14,12 @@ function getDemoData(variant) {
   return { issData: { lat: -10.22, lon: 135.44 }, kp: 0.7, nextPass: null };
 }
 
+function formatCoords(lat, lon) {
+  const latStr = `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}`;
+  const lonStr = `${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}`;
+  return `${latStr}, ${lonStr}`;
+}
+
 const CATEGORY_COLOR = { 'historia': '#d4890a' };
 
 function createIcon(category) {
@@ -146,22 +152,22 @@ async function fetchISS() {
                    : demoVariant === 'interference' ? 'nad Europą'
                    : 'nad Pacyfikiem';
     const el = document.getElementById('iss-status');
-    if (el) el.innerHTML = `[DEMO] Międzynarodowa Stacja Kosmiczna teraz: ${issData.lat}°N, ${issData.lon}°E — ${locLabel}`;
+    if (el) el.innerHTML = `[DEMO] ISS: ${formatCoords(issData.lat, issData.lon)} — ${locLabel}`;
     return issData;
   }
   try {
     const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const lat = data.latitude.toFixed(2);
-    const lon = data.longitude.toFixed(2);
+    const lat = parseFloat(data.latitude.toFixed(2));
+    const lon = parseFloat(data.longitude.toFixed(2));
 
     const el = document.getElementById('iss-status');
     if (el) {
-      el.innerHTML = `Międzynarodowa Stacja Kosmiczna teraz: ${lat}°N, ${lon}°E — ${issKontekst(data.latitude, data.longitude)}`;
+      el.innerHTML = `ISS: ${formatCoords(lat, lon)} — ${issKontekst(lat, lon)}`;
     }
 
-    return { lat: parseFloat(lat), lon: parseFloat(lon) };
+    return { lat, lon };
   } catch (e) {
     console.warn('ISS fetch failed:', e);
     const el = document.getElementById('iss-status');
@@ -209,8 +215,8 @@ async function fetchNextPassage() {
     const satrec = satellite.twoline2satrec(lines[0].trim(), lines[1].trim());
 
     const now = new Date();
-    for (let i = 0; i < 5760; i++) { // check every 5s for 8h
-      const t = new Date(now.getTime() + i * 5000);
+    for (let i = 0; i < 3600; i++) { // check every 1s for 1h
+      const t = new Date(now.getTime() + i * 1000);
       const { position } = satellite.propagate(satrec, t);
       if (!position) continue;
       const gmst = satellite.gstime(t);
@@ -240,7 +246,9 @@ async function renderFinale() {
     nextPass = demo.nextPass;
     variant = demoVariant;
   } else {
-    [issData, kp, nextPass] = await Promise.all([fetchISS(), fetchKp(), fetchNextPassage()]);
+    [nextPass] = await Promise.all([fetchNextPassage()]);
+    issData = (spaceState.issLat !== null) ? { lat: spaceState.issLat, lon: spaceState.issLon, alt: null } : null;
+    kp = spaceState.kp;
     if (kp !== null && kp >= 4) {
       variant = 'interference';
     } else if (issData && issData.lon >= 0 && issData.lon <= 40
@@ -264,12 +272,12 @@ async function renderFinale() {
   const daneEl = document.getElementById('space-data');
   if (daneEl) {
     const kpDisplay = kp !== null ? kp.toFixed(1) : '—';
-    const issLat = issData ? `${issData.lat}°N` : '—';
-    const issLon = issData ? `${issData.lon}°E` : '—';
+    const coords = issData ? formatCoords(issData.lat, issData.lon) : '—';
+    const location = issData ? issKontekst(issData.lat, issData.lon) : '—';
     daneEl.innerHTML = `
-      <div>Międzynarodowa Stacja Kosmiczna: ${issLat}, ${issLon}— ${issKontekst(data.latitude, data.longitude)}</div>
+      <div>ISS pozycja: ${coords} — ${location}</div>
       ${nextPass ? `<div>Przelot nad Stalową Wolą: ${nextPass}</div>` : ''}
-      <div>Index aktywności słonecznej: ${kpDisplay}${kp !== null && kp >= 4 ? ' ⚡ burza magnetyczna' : ''}</div>
+      <div>Indeks aktywności słonecznej (Kp): ${kpDisplay}${kp !== null && kp >= 4 ? ' ⚡ burza magnetyczna' : ''}</div>
     `;
   }
 }
@@ -315,10 +323,11 @@ document.addEventListener('DOMContentLoaded', () => {
     historiaBodyEl.textContent = narration.historia;
   }
 
-  fetchISS().then(iss => {
+  async function pollISS() {
+    const iss = await fetchISS();
     if (iss) { spaceState.issLat = iss.lat; spaceState.issLon = iss.lon; }
-    setInterval(fetchISS, 5000);
-  });
+  }
+  pollISS().then(() => setInterval(pollISS, 1000));
   fetchKp().then(kp => { if (kp !== null) spaceState.kp = kp; });
 
   document.getElementById('btn-share')?.addEventListener('click', () => {
