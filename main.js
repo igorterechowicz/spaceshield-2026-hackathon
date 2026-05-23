@@ -12,10 +12,11 @@ function createIcon(category) {
     html: `<div style="
       width: 14px; height: 14px;
       background: ${color};
-      border: 2px solid #fff;
+      border: 2px solid rgba(255,255,255,0.8);
       border-radius: 50%;
-      box-shadow: 0 0 6px ${color}88;
-    "></div>`,
+      position: relative;
+      color: ${color};
+    "><div class="marker-ring"></div></div>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
   });
@@ -87,24 +88,21 @@ function issKontekst(lat, lon) {
 async function fetchISS() {
   try {
     const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const lat = data.latitude.toFixed(2);
     const lon = data.longitude.toFixed(2);
 
     const el = document.getElementById('iss-status');
     if (el) {
-      el.innerHTML = `
-        <span class="iss-label">ISS teraz:</span>
-        ${lat}°N, ${lon}°E
-        <span class="iss-context">— ${issKontekst(data.latitude, data.longitude)}</span>
-      `;
+      el.innerHTML = `ISS teraz: ${lat}°N, ${lon}°E — ${issKontekst(data.latitude, data.longitude)}`;
     }
 
     return { lat: parseFloat(lat), lon: parseFloat(lon) };
   } catch (e) {
     console.warn('ISS fetch failed:', e);
     const el = document.getElementById('iss-status');
-    if (el) el.textContent = 'ISS: brak połączenia';
+    if (el) el.innerHTML = `ISS: brak połączenia <span class="offline-badge">offline</span>`;
     return null;
   }
 }
@@ -208,6 +206,7 @@ async function renderFinale() {
 function initSplitScreen() {
   const slider = document.getElementById('split-slider');
   const before = document.querySelector('.split-before');
+  const divider = document.getElementById('split-divider');
   const beforeImg = before?.querySelector('img');
   const afterImg = document.querySelector('.split-after img');
 
@@ -221,10 +220,14 @@ function initSplitScreen() {
   }
 
   if (!slider || !before) return;
-  slider.addEventListener('input', (e) => {
-    before.style.clipPath = `inset(0 ${100 - e.target.value}% 0 0)`;
-  });
-  before.style.clipPath = `inset(0 50% 0 0)`;
+
+  const update = (val) => {
+    before.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+    if (divider) divider.style.left = `${val}%`;
+  };
+
+  slider.addEventListener('input', (e) => update(e.target.value));
+  update(50);
 }
 
 let mapInitialized = false;
@@ -261,13 +264,30 @@ function router() {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('intro-narration').textContent = narration.intro;
-  document.getElementById('map-panel').innerHTML =
-    '<p class="panel-placeholder">Kliknij znacznik na mapie, aby zobaczyć historię tego miejsca.</p>';
 
   initSplitScreen();
 
   fetchISS();
   setInterval(fetchISS, 5000);
+
+  document.getElementById('btn-share')?.addEventListener('click', () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({
+        title: 'Hutnik, który patrzył w górę',
+        text: 'Twoja wersja historii zależy od stanu kosmosu w tej chwili. Sprawdź swoją.',
+        url,
+      }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('btn-share');
+        if (btn) {
+          btn.textContent = 'Link skopiowany ✓';
+          setTimeout(() => { btn.textContent = 'Podziel się swoją wersją historii'; }, 2500);
+        }
+      });
+    }
+  });
 
   window.addEventListener('hashchange', router);
   router();

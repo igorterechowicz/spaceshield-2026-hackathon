@@ -112,7 +112,7 @@ section.active {
   content: '';
   position: absolute;
   inset: -6%;
-  background-image: url('asstets/img/forest-hall-starry-night.png');
+  background-image: url('assets/img/forest-hall-starry-night.png');
   background-size: cover;
   background-position: center;
   filter: sepia(0.65) brightness(0.65) contrast(1.1);
@@ -155,7 +155,7 @@ section.active {
   background: var(--bg-secondary);
   padding: 1.5rem;
   overflow-y: auto;
-  border-left: 1px solid var(--border);
+  border-left: 2px solid var(--accent-amber);
 }
 
 #archiwum {
@@ -392,4 +392,159 @@ h3 {
   letter-spacing: 0.1em;
   color: var(--text-secondary);
   margin-bottom: 0.25rem;
+}
+
+/* ── Pulsing marker ring ── */
+
+@keyframes markerRing {
+  0%   { transform: scale(0.5); opacity: 0.75; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.marker-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: markerRing 2s ease-out infinite;
+  pointer-events: none;
+}
+
+/* ── Intro scan line ── */
+
+@keyframes scanSweep {
+  0%   { top: 0;    opacity: 0; }
+  4%   { opacity: 0.5; }
+  96%  { opacity: 0.5; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(212, 137, 10, 0.2) 15%,
+    rgba(212, 137, 10, 0.55) 50%,
+    rgba(212, 137, 10, 0.2) 85%,
+    transparent 100%
+  );
+  z-index: 3;
+  pointer-events: none;
+  animation: scanSweep 11s linear infinite;
+}
+
+/* ── Intro staggered fade-in ── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.intro-content > * {
+  opacity: 0;
+  animation: fadeInUp 0.9s ease forwards;
+}
+
+.intro-content > h1           { animation-delay: 0.3s; }
+.intro-content > .intro-text  { animation-delay: 0.85s; }
+.intro-content > .iss-status  { animation-delay: 1.4s; }
+.intro-content > .iss-context { animation-delay: 1.6s; }
+.intro-content > .btn-enter   { animation-delay: 2.1s; }
+
+/* ── Share button ── */
+
+.btn-share {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  background: transparent;
+  color: var(--accent-amber);
+  border: 1px solid var(--accent-amber);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-share:hover {
+  background: var(--accent-amber);
+  color: #000;
+}
+
+/* ── Split-screen divider ── */
+
+.split-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(212, 137, 10, 0.65);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  pointer-events: none;
+}
+
+.split-divider::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--accent-amber);
+  font-size: 0.7rem;
+  background: var(--bg-primary);
+  padding: 0.2rem;
+  line-height: 1;
+}
+
+/* ── Map legend ── */
+
+.map-legend {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1rem;
+  background: rgba(17, 17, 24, 0.9);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  font-size: 0.7rem;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  flex-shrink: 0;
+}
+
+/* ── Offline badge ── */
+
+.offline-badge {
+  display: inline-block;
+  background: rgba(229, 62, 62, 0.15);
+  border: 1px solid rgba(229, 62, 62, 0.4);
+  color: #fc8181;
+  font-size: 0.7rem;
+  font-family: monospace;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0.04em;
+  margin-left: 0.5rem;
 }

@@ -23,6 +23,7 @@
 
   <!-- Ekran 1: Intro -->
   <section id="intro">
+    <div class="scan-line"></div>
     <div class="intro-content">
       <h1 class="serif">Hutnik, który patrzył w górę</h1>
       <p class="intro-text" id="intro-narration"></p>
@@ -35,8 +36,14 @@
   <!-- Ekran 2: Mapa -->
   <section id="map">
     <div id="leaflet-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#e53e3e"></div>Białe plamy</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ed8936"></div>Bariery</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d4890a"></div>Historia</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3a7bd5"></div>Rekomendacje</div>
+    </div>
     <div class="map-panel" id="map-panel">
-      <p class="panel-placeholder">Kliknij marker na mapie</p>
+      <p class="panel-placeholder">Kliknij znacznik na mapie, aby zobaczyć historię tego miejsca.</p>
     </div>
   </section>
 
@@ -52,6 +59,7 @@
         <img src="assets/img/archiwum-1.jpg" alt="Stalowa Wola lata 50.">
         <span class="split-label split-label-left">1957 — Huta Stalowa Wola</span>
       </div>
+      <div class="split-divider" id="split-divider"></div>
       <input type="range" id="split-slider" class="split-slider" value="50" min="0" max="100">
     </div>
   </section>
@@ -61,6 +69,7 @@
     <div class="final-content">
       <p class="serif finale-text" id="finale-text">Ładowanie sygnału...</p>
       <div class="space-data" id="space-data"></div>
+      <button class="btn-share" id="btn-share">Podziel się swoją wersją historii</button>
     </div>
   </section>
 
