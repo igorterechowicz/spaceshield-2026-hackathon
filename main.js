@@ -130,6 +130,15 @@ async function fetchKp() {
 const OBS_LAT = 50.5833;
 const OBS_LON = 22.0500;
 
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.asin(Math.sqrt(a));
+}
+
 async function fetchNextPassage() {
   try {
     const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=2LE');
@@ -138,23 +147,16 @@ async function fetchNextPassage() {
     // 2LE has no name line: lines[0] = TLE line 1, lines[1] = TLE line 2
     const satrec = satellite.twoline2satrec(lines[0].trim(), lines[1].trim());
 
-    const obsGd = {
-      longitude: OBS_LON * Math.PI / 180,
-      latitude:  OBS_LAT * Math.PI / 180,
-      height: 0.2,
-    };
-
     const now = new Date();
-    for (let i = 0; i < 5760; i++) { // sprawdź co 5s przez 8h
+    for (let i = 0; i < 5760; i++) { // check every 5s for 8h
       const t = new Date(now.getTime() + i * 5000);
       const { position } = satellite.propagate(satrec, t);
       if (!position) continue;
       const gmst = satellite.gstime(t);
-      const lookAngles = satellite.ecfToLookAngles(
-        obsGd,
-        satellite.eciToEcf(position, gmst)
-      );
-      if (lookAngles.elevation > 0) {
+      const posGd = satellite.eciToGeodetic(position, gmst);
+      const issLat = posGd.latitude  * 180 / Math.PI;
+      const issLon = posGd.longitude * 180 / Math.PI;
+      if (haversineKm(OBS_LAT, OBS_LON, issLat, issLon) < 300) {
         const mins = Math.round((t.getTime() - now.getTime()) / 60000);
         if (mins < 90) return `za ${mins} min`;
         return `o ${t.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`;
