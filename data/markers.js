@@ -11,25 +11,25 @@ const markers = [
     notatka_minimal: "Noc, szlaban przy torach. Sputnik przeszedł o 21:07. Niebo dostało moją uwagę."
   },
   {
-    lat: 50.567787046276294, lon: 22.06015870859697,
+    lat: 50.56373797149967, lon: 22.054262183260924,
     kategoria: "historia",
-    tytul: "",
+    tytul: "Osiedle hutnicze",
     zdjecie: "",
-    rok_zdjecia: "",
-    historia: "",
-    notatka_full: "",
-    notatka_more: "",
-    notatka_minimal: ""
+    rok_zdjecia: "ok. 1946",
+    historia: "W zaledwie 26 miesięcy w szczerym polu stanęła gigantyczna fabryka, bloki mieszkalne, szkoła, szpital, a nawet luksusowy hotel (dzisiejszy Hotel Hutnik). Oficjalne otwarcie zakładów z udziałem prezydenta Ignacego Mościckiego odbyło się w czerwcu 1939 roku Osiedle hutnicze w Stalowej Woli to przedwojenny „American Dream” w polskim wydaniu - nowoczesne, przemyślane miasto, które wyrosło pośród sosen w nieco ponad dwa lata, stając się symbolem przedwojennego sukcesu gospodarczego.",
+    notatka_full: "Gdy na stałe osiadłem przy ulicy Hutniczej i poślubiłem Marię, myślałem, że to już cały mój świat. Jednak w 1957 roku radio podało komunikat: w kosmos wystrzelono pierwszego sztucznego satelitę. Ta wiadomość poraziła mnie jak prąd. Podczas gdy reszta szychty imprezowała, zacząłem potajemnie wynosić z zakładu materiały. W naszym ciasnym pokoju, w absolutnej tajemnicy, budowałem radioteleskop - moje okno na wolność. Ze stalowej blachy wyklepałem idealną paraboloidę, sercem urządzenia uczyniłem przerobione, lampowe radio Pionier, a setki metrów miedzianego drutu miały sprawić, by czysty pisk satelity przebił się przez szum huty. Całość osadziłem na ciężkim, trójnożnym stojaku, zdolnym utrzymać antenę na dachu bloku mimo nadsańskiego wiatru.",
+    notatka_more: "Gdy na stałe osiadłem przy ulicy Hutniczej i poślubiłem Marię, myślałem, że to już cały mój świat. Jednak w 1957 roku radio podało wiadomość o pierwszym sztucznym satelicie. Ta wiadomość poraziła mnie jak prąd. Korzystając z nieuwagi załogi, zacząłem potajemnie wynosić z zakładu materiały. W naszym ciasnym pokoju budowałem radioteleskop, który stał się moim oknem na wolność. Ze stalowej blachy wyklepałem zwierciadło w kształcie paraboloidy, przerobiłem lampowego „Pioniera” i nawinąłem setki metrów miedzianego drutu, by wychwycić sygnał satelity ponad szumem huty.",
+    notatka_minimal: "Gdy osiadłem przy ulicy Hutniczej i poślubiłem Marię, myślałem, że to już całe moje życie. Wszystko zmieniło się w 1957 roku, gdy radio ogłosiło sukces pierwszego satelity. Potajemnie zacząłem wynosić z huty materiały i w małym pokoju budować własne urządzenie do nasłuchiwania nieba. Ze stalowej blachy zrobiłem zwierciadło, przerobiłem stare radio i zespawałem ciężki stojak pod antenę."
   },
   {
-    lat: 50.55569081595824, lon: 22.045896087903262,
+    lat: 50.565661405778094, lon: 22.066249131486696,
     kategoria: "historia",
-    tytul: "",
+    tytul: "Ulica Staszica (Dach nad Miastem i Pierwszy Sygnał)",
     zdjecie: "",
-    rok_zdjecia: "",
-    historia: "",
-    notatka_full: "",
-    notatka_more: "",
-    notatka_minimal: ""
+    rok_zdjecia: "ok. 1957",
+    historia: "Lata 50. i 60. w Stalowej Woli to czas intensywnej rozbudowy miejskiego centrum wzdłuż osi dzisiejszej ulicy Staszica. Nowo wzniesiony, potężny 5-piętrowy budynek z charakterystycznym zwieńczeniem architektonicznym stanowił wówczas prawdziwy obraz, nowoczesnego oblicza miasta. Górując nad okolicznymi placami i zieleńcami, był symbolem stabilizacji i nowego etapu w życiu robotniczej społeczności.",
+    notatka_full: "Kiedy w sercu miasta wyrósł monumentalny, 5-piętrowy budynek przy ulicy Staszica, zrozumiałem, że to moja jedyna szansa. Korzystając z mglistej nocy, gdy Maria spała, szmuglowałem na dach gotowe elementy radioteleskopu: ciężki stojak, paraboliczne zwierciadło i wypatroszonego „Pioniera”. Serce waliło mi ze strachu przed milicyjnymi patrolami. W absolutnej ciszy nocy skierowałem antenę w czarną otchłań nieba. Przez długie godziny słyszałem tylko ziemski szum huty, aż nagle, tuż przed świtem, rozległ się miarowy, kosmiczny pisk. Satelita nadawał. Zalałem się łzami, bo czułem, że ten niepozorny sygnał jest naszym przyszłościowym oknem na świat i zapowiedzią nowej ery.",
+    notatka_more: "Gdy w centrum miasta wyrósł nowy budynek przy ulicy Staszica, od razu zrozumiałem, że to moja jedyna szansa. Pod osłoną nocy wnosiłem na dach elementy mojego radioteleskopu: ciężki stojak, stalowe zwierciadło i wypatroszonego „Pioniera”. Serce waliło mi ze strachu przed milicyjnymi patrolami. Wysoko nad Stalową Wolą skierowałem antenę ku niebu. Początkowo w słuchawkach słyszałem jedynie szum huty, lecz przed świtem rozległ się czysty sygnał. Satelita był tam. Nadawał. Trzymając drżący kabel, czułem, że oto zaczyna się nowa era.",
+    notatka_minimal: "Gdy przy ulicy Staszica wyrósł nowy budynek, zrozumiałem, że to moja szansa. Nocami wnosiłem na dach części mojego urządzenia: stojak, stalowe zwierciadło i przerobione radio. Bałem się patroli, ale wiedziałem, że muszę spróbować. Na szczycie skierowałem antenę ku niebu. Przez długi czas słyszałem jedynie szum huty, aż nagle pojawił się wyraźny sygnał. Satelita nadawał. Stałem samotnie na dachu i czułem, że zaczyna się nowa epoka."
   }
 ];
