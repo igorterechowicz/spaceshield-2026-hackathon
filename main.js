@@ -2,7 +2,7 @@ let demoMode = false;
 const DEMO_VARIANTS = ['contact', 'silence', 'interference'];
 const demoVariant = DEMO_VARIANTS[Math.floor(Math.random() * DEMO_VARIANTS.length)];
 
-const spaceState = { issLat: null, issLon: null, kp: null };
+const spaceState = { issLat: null, issLon: null, kp: null, nextPass: null };
 
 function getDemoData(variant) {
   if (variant === 'contact') {
@@ -208,15 +208,18 @@ function haversineKm(lat1, lon1, lat2, lon2) {
 
 async function fetchNextPassage() {
   try {
-    const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=2LE');
-    const text = await res.text();
-    const lines = text.trim().split('\n');
-    // 2LE has no name line: lines[0] = TLE line 1, lines[1] = TLE line 2
-    const satrec = satellite.twoline2satrec(lines[0].trim(), lines[1].trim());
+    const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544/tles');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const satrec = satellite.twoline2satrec(data.line1.trim(), data.line2.trim());
 
     const now = new Date();
-    for (let i = 0; i < 3600; i++) { // check every 1s for 1h
-      const t = new Date(now.getTime() + i * 1000);
+
+    // Phase 1: coarse scan every 60s for 24h (1440 steps)
+    let coarseHitMs = null;
+    for (let i = 0; i < 1440; i++) {
+      const ms = i * 60000;
+      const t = new Date(now.getTime() + ms);
       const { position } = satellite.propagate(satrec, t);
       if (!position) continue;
       const gmst = satellite.gstime(t);
@@ -224,11 +227,31 @@ async function fetchNextPassage() {
       const issLat = posGd.latitude  * 180 / Math.PI;
       const issLon = posGd.longitude * 180 / Math.PI;
       if (haversineKm(OBS_LAT, OBS_LON, issLat, issLon) < 300) {
-        const mins = Math.round((t.getTime() - now.getTime()) / 60000);
+        coarseHitMs = ms;
+        break;
+      }
+    }
+
+    if (coarseHitMs === null) return null;
+
+    // Phase 2: refine ±5 min around coarse hit (≤600 steps of 1s)
+    const refineStart = Math.max(0, coarseHitMs - 5 * 60000);
+    const refineEnd = coarseHitMs + 5 * 60000;
+    for (let ms = refineStart; ms <= refineEnd; ms += 1000) {
+      const t = new Date(now.getTime() + ms);
+      const { position } = satellite.propagate(satrec, t);
+      if (!position) continue;
+      const gmst = satellite.gstime(t);
+      const posGd = satellite.eciToGeodetic(position, gmst);
+      const issLat = posGd.latitude  * 180 / Math.PI;
+      const issLon = posGd.longitude * 180 / Math.PI;
+      if (haversineKm(OBS_LAT, OBS_LON, issLat, issLon) < 300) {
+        const mins = Math.round(ms / 60000);
         if (mins < 90) return `za ${mins} min`;
         return `o ${t.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`;
       }
     }
+
     return null;
   } catch (e) {
     console.warn('Pass fetch failed:', e);
@@ -246,7 +269,7 @@ async function renderFinale() {
     nextPass = demo.nextPass;
     variant = demoVariant;
   } else {
-    [nextPass] = await Promise.all([fetchNextPassage()]);
+    nextPass = spaceState.nextPass;
     issData = (spaceState.issLat !== null) ? { lat: spaceState.issLat, lon: spaceState.issLon, alt: null } : null;
     kp = spaceState.kp;
     if (kp !== null && kp >= 4) {
@@ -327,8 +350,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const iss = await fetchISS();
     if (iss) { spaceState.issLat = iss.lat; spaceState.issLon = iss.lon; }
   }
-  pollISS().then(() => setInterval(pollISS, 1000));
+  pollISS();
   fetchKp().then(kp => { if (kp !== null) spaceState.kp = kp; });
+  fetchNextPassage().then(p => { spaceState.nextPass = p; });
 
   document.getElementById('btn-share')?.addEventListener('click', () => {
     const url = window.location.href;
