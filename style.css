@@ -41,7 +41,7 @@ section {
   padding: 2rem;
 }
 
-#mapa {
+#map {
   height: 100vh;
   position: relative;
   display: flex;

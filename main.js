@@ -1,20 +1,20 @@
-const KOLOR_KATEGORII = {
+const CATEGORY_COLOR = {
   'biala-plama':  '#e53e3e',
   'bariera':      '#ed8936',
   'historia':     '#d4890a',
   'rekomendacja': '#3a7bd5',
 };
 
-function createIcon(kategoria) {
-  const kolor = KOLOR_KATEGORII[kategoria] || '#888';
+function createIcon(category) {
+  const color = CATEGORY_COLOR[category] || '#888';
   return L.divIcon({
     className: '',
     html: `<div style="
       width: 14px; height: 14px;
-      background: ${kolor};
+      background: ${color};
       border: 2px solid #fff;
       border-radius: 50%;
-      box-shadow: 0 0 6px ${kolor}88;
+      box-shadow: 0 0 6px ${color}88;
     "></div>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
@@ -130,7 +130,7 @@ async function fetchKp() {
 const OBS_LAT = 50.5833;
 const OBS_LON = 22.0500;
 
-async function fetchNastepnyPrzelot() {
+async function fetchNextPassage() {
   try {
     const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=2LE');
     const text = await res.text();
@@ -168,23 +168,23 @@ async function fetchNastepnyPrzelot() {
 }
 
 async function renderFinale() {
-  const [issData, kp, nextPass] = await Promise.all([fetchISS(), fetchKp(), fetchNastepnyPrzelot()]);
+  const [issData, kp, nextPass] = await Promise.all([fetchISS(), fetchKp(), fetchNextPassage()]);
 
-  let wariant;
+  let variant;
   if (kp !== null && kp >= 4) {
-    wariant = 'zaklocenia';
+    variant = 'interference';
   } else if (issData && issData.lon >= 0 && issData.lon <= 40
              && issData.lat >= 35 && issData.lat <= 72) {
-    wariant = 'kontakt';
+    variant = 'contact';
   } else {
-    wariant = 'cisza';
+    variant = 'silence';
   }
 
   const tekstEl = document.getElementById('finale-text');
   if (tekstEl) {
-    const klucz = `finale_${wariant}`;
+    const key = `finale_${variant}`;
     const kpDisplay = kp !== null ? kp.toFixed(1) : '—';
-    let tekst = (narracja[klucz] || '')
+    let tekst = (narration[key] || '')
       .replace('[KP_VALUE]', kpDisplay)
       .replace('[NEXT_PASS]', nextPass ?? '—');
     tekstEl.innerHTML = `<p class="finale-text serif">${tekst}</p>`;
@@ -226,7 +226,7 @@ function initSplitScreen() {
 }
 
 function initScrollAnimations() {
-  const elementy = document.querySelectorAll('#archiwum, #final, .map-panel');
+  const elements = document.querySelectorAll('#archiwum, #final, .map-panel');
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -236,11 +236,11 @@ function initScrollAnimations() {
     });
   }, { threshold: 0.1 });
 
-  elementy.forEach(el => observer.observe(el));
+  elements.forEach(el => observer.observe(el));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('intro-narracja').textContent = narracja.intro;
+  document.getElementById('intro-narration').textContent = narration.intro;
   document.getElementById('map-panel').innerHTML =
     '<p class="panel-placeholder">Kliknij znacznik na mapie, aby zobaczyć historię tego miejsca.</p>';
 
