@@ -225,9 +225,54 @@ section.active {
 }
 
 #final {
+  position: relative;
+  overflow: hidden;
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
+}
+
+#final::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  background-size: cover;
+  background-position: center;
+  filter: sepia(0.55) brightness(0.55) contrast(1.1);
+  z-index: 0;
+  animation: introZoom 32s ease-in-out infinite alternate;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+#final.finale-contact::before,
+#final.finale-silence::before,
+#final.finale-interference::before {
+  opacity: 1;
+}
+
+#final.finale-contact::before {
+  background-image: url('assets/img/finale-contact.png');
+}
+
+#final.finale-silence::before {
+  background-image: url('assets/img/finale-silence.png');
+}
+
+#final.finale-interference::before {
+  background-image: url('assets/img/finale-interference.jpg');
+}
+
+#final::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+  z-index: 1;
 }
 
 /* ── Historia ── */
@@ -513,6 +558,8 @@ h3 {
 /* ── Final ── */
 
 .final-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;

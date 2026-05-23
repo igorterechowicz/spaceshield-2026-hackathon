@@ -308,6 +308,10 @@ async function renderFinale() {
     }
   }
 
+  const finalEl = document.getElementById('final');
+  finalEl.classList.remove('finale-contact', 'finale-silence', 'finale-interference');
+  finalEl.classList.add(`finale-${variant}`);
+
   const tekstEl = document.getElementById('finale-text');
   if (tekstEl) {
     const key = `finale_${variant}`;

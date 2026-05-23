@@ -20,7 +20,7 @@ Antoni miał rację — tam zawsze coś było.`,
   finale_silence: `Nic. Tylko szum atmosferyczny i odgłos pieca z hali obok.
 Może jutro. Może za tydzień.
 Cierpliwość to jedyna antena którą zbudowałem naprawdę dobrze.
-ISS jest teraz nad Pacyfikiem. Okno przelotowe nad Stalową Wolą: [NEXT_PASS].`,
+ISS jest teraz daleko. Okno przelotowe nad Stalową Wolą: [NEXT_PASS].`,
 
   finale_interference: `Burza magnetyczna. Wszystkie częstotliwości zakłócone.
 W notesie napisał tylko: "Kosmos też ma swoje złe dni."
