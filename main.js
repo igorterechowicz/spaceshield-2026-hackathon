@@ -92,11 +92,56 @@ function showDane() {
 }
 
 function issKontekst(lat, lon) {
-  if (lat >= 49 && lat <= 55 && lon >= 14 && lon <= 24) return 'nad Polską';
-  if (lat >= 35 && lat <= 72 && lon >= -10 && lon <= 40) return 'nad Europą';
-  if (lat >= 0 && lat <= 35) return 'nad równikiem';
-  if (lat < 0) return 'na półkuli południowej';
-  return 'w pobliżu Rosji';
+
+  // Polska
+  if (lat >= 49.0 && lat <= 54.9 &&
+      lon >= 14.0 && lon <= 24.5) {
+    return 'nad Polską';
+  }
+
+  // Europa
+  if (lat >= 35 && lat <= 72 &&
+      lon >= -10 && lon <= 40) {
+    return 'nad Europą';
+  }
+
+  // Afryka
+  if (lat >= -35 && lat < 37 &&
+      lon >= -20 && lon <= 55) {
+    return 'nad Afryką';
+  }
+
+  // Azja
+  if (lat >= 5 && lat <= 80 &&
+      lon > 40 && lon <= 180) {
+    return 'nad Azją';
+  }
+
+  // Ameryka Północna
+  if (lat >= 15 && lat <= 75 &&
+      lon >= -170 && lon <= -50) {
+    return 'nad Ameryką Północną';
+  }
+
+  // Ameryka Południowa
+  if (lat >= -60 && lat < 15 &&
+      lon >= -90 && lon <= -30) {
+    return 'nad Ameryką Południową';
+  }
+
+  // Australia i Oceania
+  if (lat >= -50 && lat <= 0 &&
+      lon >= 110 && lon <= 180) {
+    return 'nad Australią i Oceanią';
+  }
+
+  // Antarktyda
+  if (lat < -60) {
+    return 'nad Antarktydą';
+  }
+
+  // Ocean / brak dopasowania
+  return 'nad oceanem';
 }
 
 async function fetchISS() {
