@@ -1,6 +1,6 @@
 let demoMode = false;
 const DEMO_VARIANTS = ['contact', 'silence', 'interference'];
-const demoVariant = DEMO_VARIANTS[Math.floor(Math.random() * DEMO_VARIANTS.length)];
+let demoVariant = 'contact';
 
 const spaceState = { issLat: null, issLon: null, kp: null, nextPass: null };
 
@@ -86,6 +86,7 @@ function getNotatka(m) {
 }
 
 function openPanel(m) {
+  window._lastOpenedMarker = m;
   const notatka = getNotatka(m);
   const kp = demoMode ? getDemoData(demoVariant).kp : spaceState.kp;
   const isMinimal = kp !== null && kp >= 4;
@@ -374,11 +375,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  document.getElementById('btn-demo')?.addEventListener('click', () => {
+  document.getElementById('btn-demo')?.addEventListener('click', async () => {
     demoMode = !demoMode;
-    document.getElementById('btn-demo').classList.toggle('active', demoMode);
-    finalRendered = false;
-    fetchISS();
+    const btn = document.getElementById('btn-demo');
+    btn.classList.toggle('active', demoMode);
+
+    const variantBtns = document.getElementById('demo-variant-btns');
+    variantBtns.style.display = demoMode ? 'flex' : 'none';
+
+    const iss = await fetchISS();
+    if (!demoMode && iss) {
+      spaceState.issLat = iss.lat;
+      spaceState.issLon = iss.lon;
+    }
+
+    if (finalRendered) {
+      renderFinale();
+    } else {
+      finalRendered = false;
+    }
+  });
+
+  document.querySelectorAll('.btn-variant').forEach(btn => {
+    btn.addEventListener('click', () => {
+      demoVariant = btn.dataset.variant;
+
+      document.querySelectorAll('.btn-variant').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      fetchISS();
+
+      if (finalRendered) {
+        finalRendered = false;
+        renderFinale();
+        finalRendered = true;
+      }
+
+      if (window._lastOpenedMarker) openPanel(window._lastOpenedMarker);
+    });
   });
 
   window.addEventListener('hashchange', router);

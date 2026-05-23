@@ -700,3 +700,34 @@ h3 {
   letter-spacing: 0.04em;
   margin-left: 0.5rem;
 }
+
+/* ── Demo variant buttons ── */
+
+#demo-variant-btns {
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.btn-variant {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-variant:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.btn-variant.active {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+}
