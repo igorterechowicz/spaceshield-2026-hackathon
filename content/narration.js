@@ -1,5 +1,7 @@
 const narration = {
 
+  historia: ``,
+
   intro: `4 października 1957. Sputnik pojawił się nad horyzontem o 21:07.
 Jan Kowalski, hutnik drugiej zmiany, był gotowy z notatnikiem.
 Tego wieczoru wszystko się zmieniło — nie dla świata, świat dowiedział się później.

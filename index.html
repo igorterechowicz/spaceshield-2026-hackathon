@@ -15,6 +15,7 @@
     <span class="nav-brand serif">Hutnik w górę</span>
     <div class="nav-links">
       <a href="#intro"    class="nav-link" data-view="intro">1957</a>
+      <a href="#historia" class="nav-link" data-view="historia">Historia</a>
       <a href="#map"      class="nav-link" data-view="map">Mapa</a>
       <a href="#archiwum" class="nav-link" data-view="archiwum">Archiwum</a>
       <a href="#final"    class="nav-link" data-view="final">Sygnał</a>
@@ -29,12 +30,24 @@
       <p class="intro-text" id="intro-narration"></p>
       <div class="iss-status" id="iss-status">Łączę się z orbitą...</div>
       <p class="iss-context">Dziś ISS przelatuje nad tym samym wzgórzem co Sputnik w 1957.</p>
-      <a href="#map" class="btn-enter">Wejdź w historię</a>
+      <a href="#historia" class="btn-enter">Wejdź w historię</a>
       <button class="btn-demo" id="btn-demo">DEMO</button>
     </div>
   </section>
 
-  <!-- Ekran 2: Mapa -->
+  <!-- Ekran 2: Historia -->
+  <section id="historia">
+    <div class="scan-line"></div>
+    <div class="historia-content">
+      <h2 class="serif">Historia</h2>
+      <div class="historia-body" id="historia-body">
+        <!-- filled from narration.js -->
+      </div>
+      <a href="#map" class="btn-enter">Odkryj Stalową Wolę</a>
+    </div>
+  </section>
+
+  <!-- Ekran 3: Mapa -->
   <section id="map">
     <div id="leaflet-map"></div>
     <div class="map-legend">

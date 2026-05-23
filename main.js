@@ -78,11 +78,11 @@ function openPanel(m) {
     <div class="reveal-hint" id="reveal-hint">▼ Pokaż co się nie zmieniło</div>
   `;
 
-  document.getElementById('reveal-hint').addEventListener('click', showDane);
-  setTimeout(showDane, 3000);
+  document.getElementById('reveal-hint').addEventListener('click', showData);
+  setTimeout(showData, 3000);
 }
 
-function showDane() {
+function showData() {
   if (panelDaneVisible) return;
   panelDaneVisible = true;
   const problem = document.getElementById('panel-problem');
@@ -310,7 +310,7 @@ let mapInitialized = false;
 let finalRendered = false;
 
 function showView(id) {
-  const validViews = ['intro', 'map', 'archiwum', 'final'];
+  const validViews = ['intro', 'historia', 'map', 'archiwum', 'final'];
   if (!validViews.includes(id)) id = 'intro';
 
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
@@ -340,6 +340,11 @@ function router() {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('intro-narration').textContent = narration.intro;
+
+  const historiaBodyEl = document.getElementById('historia-body');
+  if (historiaBodyEl && narration.historia) {
+    historiaBodyEl.textContent = narration.historia;
+  }
 
   initSplitScreen();
 
