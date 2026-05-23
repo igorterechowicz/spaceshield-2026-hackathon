@@ -164,6 +164,7 @@ section.active {
   background: var(--bg-secondary);
   padding: 1.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
   border-left: 2px solid var(--accent-amber);
 }
 
