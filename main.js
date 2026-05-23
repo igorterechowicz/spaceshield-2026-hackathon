@@ -22,6 +22,12 @@ function formatCoords(lat, lon) {
 
 const CATEGORY_COLOR = { 'historia': '#d4890a' };
 
+function formatISSLabel(issData) {
+  const coords = issData ? formatCoords(issData.lat, issData.lon) : '—';
+  const location = issData ? issKontekst(issData.lat, issData.lon) : '—';
+  return `ISS pozycja: ${coords} — ${location}`;
+}
+
 function createIcon(category) {
   const color = CATEGORY_COLOR[category] || '#888';
   return L.divIcon({
@@ -148,11 +154,8 @@ function issKontekst(lat, lon) {
 async function fetchISS() {
   if (demoMode) {
     const { issData } = getDemoData(demoVariant);
-    const locLabel = demoVariant === 'contact' ? 'nad Polską'
-                   : demoVariant === 'interference' ? 'nad Europą'
-                   : 'nad Pacyfikiem';
     const el = document.getElementById('iss-status');
-    if (el) el.innerHTML = `[DEMO] ISS: ${formatCoords(issData.lat, issData.lon)} — ${locLabel}`;
+    if (el) el.innerHTML = `[DEMO] ${formatISSLabel(issData)}`;
     return issData;
   }
   try {
@@ -164,7 +167,7 @@ async function fetchISS() {
 
     const el = document.getElementById('iss-status');
     if (el) {
-      el.innerHTML = `ISS: ${formatCoords(lat, lon)} — ${issKontekst(lat, lon)}`;
+      el.innerHTML = formatISSLabel({ lat, lon });
     }
 
     return { lat, lon };
@@ -295,10 +298,8 @@ async function renderFinale() {
   const daneEl = document.getElementById('space-data');
   if (daneEl) {
     const kpDisplay = kp !== null ? kp.toFixed(1) : '—';
-    const coords = issData ? formatCoords(issData.lat, issData.lon) : '—';
-    const location = issData ? issKontekst(issData.lat, issData.lon) : '—';
     daneEl.innerHTML = `
-      <div>ISS pozycja: ${coords} — ${location}</div>
+      <div>${formatISSLabel(issData)}</div>
       ${nextPass ? `<div>Przelot nad Stalową Wolą: ${nextPass}</div>` : ''}
       <div>Indeks aktywności słonecznej (Kp): ${kpDisplay}${kp !== null && kp >= 4 ? ' ⚡ burza magnetyczna' : ''}</div>
     `;
