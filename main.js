@@ -115,8 +115,12 @@ async function fetchKp() {
       'https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json'
     );
     const data = await res.json();
-    const ostatniWpis = data[data.length - 1];
-    return parseFloat(ostatniWpis[1]);
+    // format: [{time_tag, Kp, a_running, station_count}, ...]
+    for (let i = data.length - 1; i >= 0; i--) {
+      const val = data[i].Kp;
+      if (typeof val === 'number' && !isNaN(val)) return val;
+    }
+    return null;
   } catch (e) {
     console.warn('Kp fetch failed:', e);
     return null;
@@ -128,10 +132,11 @@ const OBS_LON = 22.0500;
 
 async function fetchNastepnyPrzelot() {
   try {
-    const res = await fetch('https://celestrak.org/SATCAT/TLE.php?CATNR=25544&FORMAT=TLE');
+    const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=2LE');
     const text = await res.text();
     const lines = text.trim().split('\n');
-    const satrec = satellite.twoline2satrec(lines[1].trim(), lines[2].trim());
+    // 2LE has no name line: lines[0] = TLE line 1, lines[1] = TLE line 2
+    const satrec = satellite.twoline2satrec(lines[0].trim(), lines[1].trim());
 
     const obsGd = {
       longitude: OBS_LON * Math.PI / 180,
