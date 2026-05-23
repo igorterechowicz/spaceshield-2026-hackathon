@@ -57,10 +57,10 @@ body {
 }
 
 .header-logo {
-  height: 28px;
+  height: 150px;
   width: auto;
-  opacity: 0.85;
   position: absolute;
+  margin-top: 15px;
   left: 50%;
   transform: translateX(-50%);
 }

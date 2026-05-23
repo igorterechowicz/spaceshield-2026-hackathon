@@ -72,23 +72,23 @@ function getNotatka(m) {
   } else {
     issLat = spaceState.issLat; issLon = spaceState.issLon; kp = spaceState.kp;
   }
-  if (kp !== null && kp >= 4) return m.notatka_brak;
+  if (kp !== null && kp >= 4) return m.notatka_minimal;
   if (issLon !== null && issLon >= 0 && issLon <= 40 && issLat !== null && issLat >= 35 && issLat <= 72) {
-    return m.notatka_pelna;
+    return m.notatka_full;
   }
-  return m.notatka_niepelna;
+  return m.notatka_more;
 }
 
 function openPanel(m) {
   const notatka = getNotatka(m);
   const kp = demoMode ? getDemoData(demoVariant).kp : spaceState.kp;
-  const isBrak = kp !== null && kp >= 4;
+  const isMinimal = kp !== null && kp >= 4;
 
   document.getElementById('map-panel').innerHTML = `
     ${m.zdjecie ? `<img src="${m.zdjecie}" class="marker-photo" alt="${m.tytul}" onerror="this.style.display='none'">` : ''}
     <p class="marker-meta">${m.rok_zdjecia || '—'} · ${m.tytul}</p>
-    <p class="cytat">"${m.cytat}"</p>
-    <p class="notatka${isBrak ? ' notatka-brak' : ''}">${notatka || ''}</p>
+    <p class="cytat">"${m.historia}"</p>
+    <p class="notatka${isMinimal ? ' notatka-brak' : ''}">${notatka || ''}</p>
   `;
 }
 
