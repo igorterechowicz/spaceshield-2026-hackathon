@@ -5,27 +5,27 @@ Podczas okupacji Niemcy zezwolili jednak na naukę przedmiotów technicznych, dz
 
 Po wojnie zamieszkał w nowym bloku na Osiedlu Hutnik i podjął pracę jako walcownik na drugiej zmianie (14:00 - 22:00) w Hucie Stalowa Wola. Choć za dnia jego światem był żar pieców i ciężki przemysł, w nocy Antoni wracał do swojej największej miłości - obserwacji nieba.`,
 
-  intro: `4 października 1957. Sputnik pojawił się nad horyzontem o 21:07.
-Antoni Radwan, hutnik drugiej zmiany, był gotowy z notatnikiem.
-Tego wieczoru wszystko się zmieniło — nie dla świata, świat dowiedział się później.
-Dla Antoniego.`,
+  intro: `4 października 1957 roku. Godzina 21:07.
+Nad dymiącym horyzontem Stalowej Woli przecina niebo coś, czego ludzkość jeszcze nie znała. Sputnik 1.
+Na dachu wieżowca , odcięty od huku nocnej szychty w hucie, czeka Antoni Radwan. W dłoni zaciska słuchawkę odbiornika, w uszach ma tylko szum fal. I nagle... jest. Zimny, miarowy pisk z orbity.
+Tego wieczoru zmieniło się wszystko. Świat dowiedział się o tym później
+`,
 
   finale_contact: `Tej nocy sygnał był wyraźny.
-Tak jak tamtej październikowej nocy w pięćdziesiątym siódmym,
-kiedy Sputnik przeszedł dokładnie nad wzgórzem.
-Antoni zapisał w notesie: sygnał odebrany. Jutro spróbuję odpowiedzieć.
-Dziś ISS przelatuje nad tym samym miejscem co 92 minuty.
-Antoni miał rację — tam zawsze coś było.`,
+  Tak jak tamtej październikowej nocy w pięćdziesiątym siódmym, kiedy Sputnik przeszedł dokładnie nad dachem.
+  Antoni zapisał w notesie: sygnał odebrany.
+  Dziś ISS przelatuje po tym samym niebie.
+  Antoni miał rację — tam zawsze coś było.`,
 
-  finale_silence: `Nic. Tylko szum atmosferyczny i odgłos pieca z hali obok.
-Może jutro. Może za tydzień.
-Cierpliwość to jedyna antena którą zbudowałem naprawdę dobrze.
-ISS jest teraz daleko. Okno przelotowe nad Stalową Wolą: [NEXT_PASS].`,
+  finale_silence: `Nic. Tylko szum atmosferyczny i odgłos pieca z huty obok.
+  Może jutro. Może za tydzień.
+  Cierpliwość to jedyna antena którą zbudowałem naprawdę dobrze.
+  ISS jest teraz daleko.`,
 
   finale_interference: `Burza magnetyczna. Wszystkie częstotliwości zakłócone.
-W notesie napisał tylko: "Kosmos też ma swoje złe dni."
-Indeks Kp: [KP_VALUE] — aktywność słoneczna wysoka.
-Nawet Sputnik milczał tej nocy. Nawet ISS wysyła tylko szum.`,
+  W notesie napisał tylko: "Kosmos też ma swoje złe dni."
+  Indeks Kp: [KP_VALUE] — aktywność słoneczna wysoka.
+  Nawet Sputnik milczał tej nocy. Nawet ISS wysyła tylko szum.`,
 
   share: {
     variant_labels: {
