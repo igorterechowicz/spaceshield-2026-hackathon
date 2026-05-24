@@ -1,4 +1,6 @@
 let demoMode = false;
+let currentAudio = null;
+let historiaAudio = null;
 const DEMO_VARIANTS = ['contact', 'silence', 'interference'];
 let demoVariant = 'contact';
 
@@ -137,7 +139,19 @@ function getNotatka(m) {
   return m.notatka_more;
 }
 
+function playMarkerAudio(path) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
+  if (!path) return;
+  currentAudio = new Audio(path);
+  currentAudio.play().catch(() => {});
+}
+
 function openPanel(m) {
+  playMarkerAudio(m.audio ?? null);
   window._lastOpenedMarker = m;
   const notatka = getNotatka(m);
   const kp = demoMode ? getDemoData(demoVariant).kp : spaceState.kp;
@@ -388,6 +402,16 @@ function showView(id) {
 
   const link = document.querySelector(`.nav-link[data-view="${id}"]`);
   if (link) link.classList.add('active');
+
+  if (id === 'historia') {
+    if (!historiaAudio) {
+      historiaAudio = new Audio('assets/audio/historia.mp3');
+    }
+    historiaAudio.play().catch(() => {});
+  } else if (historiaAudio) {
+    historiaAudio.pause();
+    historiaAudio.currentTime = 0;
+  }
 
   if (id === 'map' && !mapInitialized) {
     initMap();
