@@ -25,7 +25,7 @@ Tego wieczoru zmieniło się wszystko. Świat dowiedział się o tym później
   finale_interference: `Burza magnetyczna. Wszystkie częstotliwości zakłócone.
   W notesie napisał tylko: "Kosmos też ma swoje złe dni."
   Indeks Kp: [KP_VALUE] — aktywność słoneczna wysoka.
-  Nawet Sputnik milczał tej nocy. Nawet ISS wysyła tylko szum.`,
+  Sputnik milczał tej nocy. Nawet ISS wysyła tylko szum.`,
 
   share: {
     variant_labels: {

@@ -147,7 +147,7 @@ function openPanel(m) {
     ${m.zdjecie ? `<img src="${m.zdjecie}" class="marker-photo" alt="${m.tytul}" onerror="this.style.display='none'">` : ''}
     <p class="marker-meta">${m.rok_zdjecia || '—'} · ${m.tytul}</p>
     <p class="cytat">${m.historia}</p>
-    <p class="notatka${isMinimal ? ' notatka-brak' : ''}">"${notatka || ''}"</p>
+    <p class="notatka${isMinimal ? ' notatka-brak' : ''}"${isMinimal ? ' data-glitch-target' : ''}>"${notatka || ''}"</p>
   `;
 
   clearTimeout(revealTimer);
@@ -366,6 +366,12 @@ async function renderFinale() {
       <div>Indeks aktywności słonecznej (Kp): ${kpDisplay}${kp !== null && kp >= 4 ? ' ⚡ burza magnetyczna' : ''}</div>
     `;
   }
+
+  if (variant === 'interference') {
+    startGlitch();
+  } else {
+    stopGlitch();
+  }
 }
 
 
@@ -375,6 +381,111 @@ let map = null;
 let revealedUpTo = 1;
 let revealTimer = null;
 const markerLayerByOrder = {};
+
+const GLITCH_CHARS = ['▓', '░', '▒', '╗', '╔', '╝', '╚', '█', '▄', '▀', '⁂', '‽', '×', '⚡'];
+let glitchTimeout = null;
+let interferenceActive = false;
+
+function startGlitch() {
+  interferenceActive = true;
+  if (glitchTimeout) return;
+  scheduleNextTick();
+}
+
+function stopGlitch() {
+  interferenceActive = false;
+  if (glitchTimeout) {
+    clearTimeout(glitchTimeout);
+    glitchTimeout = null;
+  }
+  document.querySelectorAll('.glitch-char').forEach(span => {
+    if (span.parentNode) {
+      span.parentNode.insertBefore(document.createTextNode(span.dataset.original || ''), span);
+      span.parentNode.removeChild(span);
+    }
+  });
+}
+
+function scheduleNextTick() {
+  glitchTimeout = setTimeout(() => {
+    glitchTimeout = null;
+    runGlitchTick();
+    if (interferenceActive) {
+      scheduleNextTick();
+    }
+  }, 350 + Math.random() * 200);
+}
+
+function runGlitchTick() {
+  if (!interferenceActive) return;
+
+  const targets = [...document.querySelectorAll(
+    '#intro-narration, #iss-status, #historia-body, ' +
+    '#finale-text, .space-data, .cytat, .notatka, .marker-meta, [data-glitch-target]'
+  )];
+  const charNodes = collectGlitchableChars(targets);
+  if (charNodes.length === 0) return;
+
+  const count = 2 + Math.floor(Math.random() * 3);
+  pickRandom(charNodes, count).forEach(({ node, index }) => injectGlitchChar(node, index));
+}
+
+function collectGlitchableChars(targets) {
+  const result = [];
+  targets.forEach(target => {
+    const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.parentElement.closest('.glitch-char, a, button, [data-no-glitch]')) continue;
+      const text = node.textContent;
+      for (let i = 0; i < text.length; i++) {
+        if (/\S/.test(text[i])) result.push({ node, index: i });
+      }
+    }
+  });
+  return result;
+}
+
+function pickRandom(arr, count) {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  const seen = new Set();
+  const result = [];
+  for (const item of shuffled) {
+    if (seen.has(item.node)) continue;
+    seen.add(item.node);
+    result.push(item);
+    if (result.length >= count) break;
+  }
+  return result;
+}
+
+function injectGlitchChar(node, charIndex) {
+  if (!node.parentNode) return;
+  const text = node.textContent;
+  if (charIndex >= text.length) return;
+
+  const before = text.slice(0, charIndex);
+  const original = text[charIndex];
+  const after = text.slice(charIndex + 1);
+
+  const noiseChar = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+  const span = document.createElement('span');
+  span.className = 'glitch-char';
+  span.dataset.original = original;
+  span.textContent = noiseChar;
+
+  const parent = node.parentNode;
+  if (before) parent.insertBefore(document.createTextNode(before), node);
+  parent.insertBefore(span, node);
+  if (after) parent.insertBefore(document.createTextNode(after), node);
+  parent.removeChild(node);
+
+  setTimeout(() => {
+    if (!span.parentNode) return;
+    span.parentNode.insertBefore(document.createTextNode(original), span);
+    span.parentNode.removeChild(span);
+  }, 80 + Math.random() * 60);
+}
 
 function showView(id) {
   const validViews = ['intro', 'historia', 'map', 'archiwum', 'final'];
@@ -418,7 +529,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (iss) { spaceState.issLat = iss.lat; spaceState.issLon = iss.lon; }
   }
   pollISS();
-  fetchKp().then(kp => { if (kp !== null) spaceState.kp = kp; });
+  fetchKp().then(kp => {
+    if (kp !== null) {
+      spaceState.kp = kp;
+      if (!demoMode && kp >= 4) startGlitch();
+    }
+  });
   fetchNextPassage().then(p => { spaceState.nextPass = p; });
 
   document.getElementById('btn-share')?.addEventListener('click', async () => {
@@ -484,6 +600,9 @@ document.addEventListener('DOMContentLoaded', () => {
       renderFinale();
     } else {
       finalRendered = false;
+      if (demoMode && demoVariant === 'interference') startGlitch();
+      else if (!demoMode && spaceState.kp !== null && spaceState.kp >= 4) startGlitch();
+      else stopGlitch();
     }
   });
 
@@ -500,6 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
         finalRendered = false;
         renderFinale();
         finalRendered = true;
+      } else {
+        if (demoVariant === 'interference') startGlitch();
+        else stopGlitch();
       }
 
       if (window._lastOpenedMarker) openPanel(window._lastOpenedMarker);

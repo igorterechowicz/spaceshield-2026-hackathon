@@ -275,6 +275,30 @@ section.active {
   z-index: 1;
 }
 
+#final.finale-interference::after {
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 70%, rgba(120, 60, 220, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 25%, rgba(40, 80, 220, 0.06) 0%, transparent 70%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.65) 100%);
+  background-size: 200% 200%, 200% 200%, 100% 100%;
+  animation: glitchGradientDrift 20s ease-in-out infinite alternate;
+}
+
+@keyframes glitchGradientDrift {
+  0%   { background-position: 0% 0%, 100% 100%, 0% 0%; }
+  33%  { background-position: 40% 20%, 60% 80%, 0% 0%; }
+  66%  { background-position: 20% 60%, 80% 40%, 0% 0%; }
+  100% { background-position: 60% 100%, 40% 0%, 0% 0%; }
+}
+
+.glitch-char {
+  color: #9b5de5;
+  text-shadow: 1px 0 #3a7bd5, -1px 0 #9b5de5;
+  display: inline-block;
+  transform: translateY(-1px) scaleX(0.95);
+  transition: none;
+}
+
 /* ── Historia ── */
 
 #historia {
