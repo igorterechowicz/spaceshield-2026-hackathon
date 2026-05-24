@@ -7,7 +7,7 @@ Po wojnie stracił rodzinę i został wysiedlony do nowego bloku na dzisiejszej 
 
   intro: `4 października 1957 roku. Godzina 21:07.
 Nad dymiącym horyzontem Stalowej Woli przecina niebo coś, czego ludzkość jeszcze nie znała. Sputnik 1.
-Na dachu wieżowca , odcięty od huku nocnej szychty w hucie, czeka Antoni Radwan. W dłoni zaciska słuchawkę odbiornika, w uszach ma tylko szum fal. I nagle... jest. Zimny, miarowy pisk z orbity.
+Na dachu wieżowca, odcięty od huku nocnej szychty w hucie, czeka Antoni Radwan. W dłoni zaciska słuchawkę odbiornika, w uszach ma tylko szum fal. I nagle... jest. Zimny, miarowy pisk z orbity.
 Tego wieczoru zmieniło się wszystko. Świat dowiedział się o tym później
 `,
 
