@@ -25,6 +25,14 @@ ISS jest teraz daleko. Okno przelotowe nad Stalową Wolą: [NEXT_PASS].`,
   finale_interference: `Burza magnetyczna. Wszystkie częstotliwości zakłócone.
 W notesie napisał tylko: "Kosmos też ma swoje złe dni."
 Indeks Kp: [KP_VALUE] — aktywność słoneczna wysoka.
-Nawet Sputnik milczał tej nocy. Nawet ISS wysyła tylko szum.`
+Nawet Sputnik milczał tej nocy. Nawet ISS wysyła tylko szum.`,
+
+  share: {
+    variant_labels: {
+      contact: 'Sygnał odebrany',
+      silence: 'Cisza kosmosu',
+      interference: 'Burza magnetyczna'
+    }
+  }
 
 };

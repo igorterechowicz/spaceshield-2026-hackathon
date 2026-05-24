@@ -20,6 +20,41 @@ function formatCoords(lat, lon) {
   return `${latStr}, ${lonStr}`;
 }
 
+function buildShareHash(variant, kp, issData) {
+  const label = narration.share.variant_labels[variant] || variant;
+  const kpStr = kp !== null ? kp.toFixed(1) : '—';
+  const issStr = issData ? formatCoords(issData.lat, issData.lon) : '—';
+  const dateStr = new Date().toLocaleDateString('pl-PL', {
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  });
+  return `${label} · Kp ${kpStr} · ISS ${issStr} · ${dateStr}`;
+}
+
+const SHARE_BG = {
+  contact: 'assets/img/finale-contact.png',
+  silence: 'assets/img/finale-silence.png',
+  interference: 'assets/img/finale-interference.jpg'
+};
+
+function populateShareCard(variant, kp, issData, nextPass) {
+  const finaleKey = `finale_${variant}`;
+  const kpDisplay = kp !== null ? kp.toFixed(1) : '—';
+  const tekst = (narration[finaleKey] || '')
+    .replace('[KP_VALUE]', kpDisplay)
+    .replace('[NEXT_PASS]', nextPass ?? '—');
+
+  const bgEl = document.getElementById('share-card-bg');
+  if (bgEl) bgEl.style.backgroundImage = `url('${SHARE_BG[variant]}')`;
+
+  document.getElementById('share-variant-label').textContent =
+    narration.share.variant_labels[variant] || '';
+  document.getElementById('share-finale-text').textContent = tekst;
+  document.getElementById('share-space-data').innerHTML =
+    `<span class="share-label">ISS</span>${issData ? formatCoords(issData.lat, issData.lon) : '—'}&emsp;&emsp;<span class="share-label">Kp</span>${kpDisplay}`;
+  document.getElementById('share-hash').textContent =
+    buildShareHash(variant, kp, issData);
+}
+
 const CATEGORY_COLOR = { 'historia': '#d4890a' };
 
 function formatISSLabel(issData) {
@@ -386,23 +421,49 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchKp().then(kp => { if (kp !== null) spaceState.kp = kp; });
   fetchNextPassage().then(p => { spaceState.nextPass = p; });
 
-  document.getElementById('btn-share')?.addEventListener('click', () => {
-    const url = window.location.href;
-    if (navigator.share) {
-      navigator.share({
-        title: 'Hutnik, który patrzył w górę',
-        text: 'Twoja wersja historii zależy od stanu kosmosu w tej chwili. Sprawdź swoją.',
-        url,
-      }).catch(() => {});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(() => {
-        const btn = document.getElementById('btn-share');
-        if (btn) {
-          btn.textContent = 'Link skopiowany ✓';
-          setTimeout(() => { btn.textContent = 'Podziel się swoją wersją historii'; }, 2500);
-        }
+  document.getElementById('btn-share')?.addEventListener('click', async () => {
+    const btn = document.getElementById('btn-share');
+    btn.textContent = 'Generowanie karty…';
+    btn.disabled = true;
+
+    let variant, kp, issData, nextPass;
+    if (demoMode) {
+      const demo = getDemoData(demoVariant);
+      variant = demoVariant; kp = demo.kp; issData = demo.issData; nextPass = demo.nextPass;
+    } else {
+      nextPass = spaceState.nextPass;
+      issData = spaceState.issLat !== null ? { lat: spaceState.issLat, lon: spaceState.issLon } : null;
+      kp = spaceState.kp;
+      if (kp !== null && kp >= 4) variant = 'interference';
+      else if (issData && issData.lon >= 0 && issData.lon <= 40 && issData.lat >= 35 && issData.lat <= 72) variant = 'contact';
+      else variant = 'silence';
+    }
+
+    populateShareCard(variant, kp, issData, nextPass);
+
+    if (!window.html2canvas) {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        s.onload = resolve; s.onerror = reject;
+        document.head.appendChild(s);
       });
     }
+
+    const card = document.getElementById('share-card');
+    const canvas = await window.html2canvas(card, {
+      width: 800, height: 480, scale: 2, useCORS: true,
+      backgroundColor: '#0a0a0f'
+    });
+
+    const dateTag = new Date().toISOString().slice(0, 10);
+    const link = document.createElement('a');
+    link.download = `hutnik-${variant}-${dateTag}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    btn.textContent = 'Podziel się swoją wersją historii';
+    btn.disabled = false;
   });
 
   document.getElementById('btn-demo')?.addEventListener('click', async () => {
