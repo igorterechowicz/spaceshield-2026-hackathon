@@ -510,8 +510,7 @@ h3 {
 }
 
 .cytat {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
+  font-family: 'Inter', sans-serif;
   color: var(--text-primary);
   line-height: 1.7;
 }
@@ -535,7 +534,8 @@ h3 {
 }
 
 .notatka {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
   color: var(--text-secondary);
   margin-top: 1rem;
   padding-top: 1rem;
@@ -545,7 +545,6 @@ h3 {
 }
 
 .notatka-brak {
-  color: var(--accent-amber);
   font-style: italic;
   opacity: 0.7;
 }

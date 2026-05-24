@@ -146,8 +146,8 @@ function openPanel(m) {
   document.getElementById('map-panel').innerHTML = `
     ${m.zdjecie ? `<img src="${m.zdjecie}" class="marker-photo" alt="${m.tytul}" onerror="this.style.display='none'">` : ''}
     <p class="marker-meta">${m.rok_zdjecia || '—'} · ${m.tytul}</p>
-    <p class="cytat">"${m.historia}"</p>
-    <p class="notatka${isMinimal ? ' notatka-brak' : ''}">${notatka || ''}</p>
+    <p class="cytat">${m.historia}</p>
+    <p class="notatka${isMinimal ? ' notatka-brak' : ''}">"${notatka || ''}"</p>
   `;
 
   clearTimeout(revealTimer);
